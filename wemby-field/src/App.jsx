@@ -487,62 +487,58 @@ function WembyStats({ gameStats, t }) {
 
           return (
             <div key={sk} style={{
-              flex: '1 1 260px', border: '1px solid #e8e8ee',
-              borderRadius: 8, overflow: 'hidden',
+              flex: '1 1 260px',
+              borderTop: `3px solid ${cfg.color}`,
+              borderBottom: '1px solid #e8e8ee',
+              paddingTop: 16,
             }}>
-              {/* Card header */}
-              <div style={{
-                background: cfg.color, padding: '14px 18px',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <TeamLogo teamId={TEAM_IDS[cfg.abbr]} size={36} />
+              {/* Header */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, paddingBottom: 10, borderBottom: '1px solid #f0f0f4' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <TeamLogo teamId={TEAM_IDS[cfg.abbr]} size={28} />
                   <div>
-                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.15em', margin: 0 }}>{cfg.label.toUpperCase()}</p>
-                    <p style={{ color: '#fff', fontSize: 13, fontWeight: 700, margin: 0 }}>{cfg.opp}</p>
+                    <p style={{ color: '#9a9aaa', fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.12em', margin: 0 }}>{cfg.label.toUpperCase()}</p>
+                    <p style={{ color: '#08080f', fontSize: 13, fontWeight: 600, margin: 0 }}>{cfg.opp}</p>
                   </div>
                 </div>
-                <span style={{ color: '#fff', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}>{cfg.result}</span>
+                <span style={{ color: '#08080f', fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}>{cfg.result}</span>
               </div>
 
-              {/* Averages */}
-              <div style={{ padding: '14px 18px 6px', borderBottom: '1px solid #f0f0f4' }}>
-                <p style={{ fontSize: 9, fontFamily: 'monospace', color: '#9a9aaa', letterSpacing: '0.15em', margin: '0 0 10px' }}>{t.s00_avg_label.toUpperCase()}</p>
-                <div style={{ display: 'flex', gap: 0 }}>
-                  {[
-                    { key: 'pts', label: t.s00_pts },
-                    { key: 'reb', label: t.s00_reb },
-                    { key: 'ast', label: t.s00_ast },
-                    { key: 'blk', label: t.s00_blk },
-                  ].map(({ key, label }) => (
-                    <div key={key} style={{ flex: 1, textAlign: 'center' }}>
-                      <p style={{ fontSize: 22, fontWeight: 700, color: '#08080f', margin: 0, fontFamily: 'monospace' }}>
-                        {avg(fullGames, key).toFixed(1)}
-                      </p>
-                      <p style={{ fontSize: 9, color: '#9a9aaa', letterSpacing: '0.1em', margin: 0, fontFamily: 'monospace' }}>{label}</p>
-                    </div>
-                  ))}
-                </div>
+              {/* Averages — single row */}
+              <div style={{ display: 'flex', marginBottom: 12 }}>
+                {[
+                  { key: 'pts', label: t.s00_pts },
+                  { key: 'reb', label: t.s00_reb },
+                  { key: 'ast', label: t.s00_ast },
+                  { key: 'blk', label: t.s00_blk },
+                ].map(({ key, label }) => (
+                  <div key={key} style={{ flex: 1 }}>
+                    <p style={{ fontSize: 18, fontWeight: 700, color: '#08080f', margin: 0, fontFamily: 'monospace' }}>
+                      {avg(fullGames, key).toFixed(1)}
+                    </p>
+                    <p style={{ fontSize: 9, color: '#9a9aaa', margin: 0, fontFamily: 'monospace' }}>{label}</p>
+                  </div>
+                ))}
               </div>
 
               {/* Per-game log */}
-              <div style={{ padding: '8px 18px 14px' }}>
+              <div>
                 {games.map(g => (
                   <div key={g.game_id} style={{
                     display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '5px 0', borderBottom: '1px solid #f4f4f7',
-                    opacity: isFoulGame(g) ? 0.45 : 1,
+                    padding: '4px 0', borderTop: '1px solid #f4f4f7',
+                    opacity: isFoulGame(g) ? 0.4 : 1,
                   }}>
                     <span style={{
-                      fontSize: 9, fontFamily: 'monospace', fontWeight: 700,
+                      fontSize: 9, fontFamily: 'monospace',
                       color: g.result === 'W' ? '#16a34a' : '#dc2626',
-                      width: 28,
-                    }}>{t.s00_game}{g.game_num} {g.result === 'W' ? t.s00_win : t.s00_loss}</span>
-                    <span style={{ fontSize: 12, fontFamily: 'monospace', color: '#38384a', flex: 1 }}>
-                      <b>{g.pts}</b>pts · <b>{g.reb}</b>reb · <b>{g.ast}</b>ast · <b>{g.blk}</b>blk
+                      width: 24, flexShrink: 0,
+                    }}>{t.s00_game}{g.game_num}</span>
+                    <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#38384a', flex: 1 }}>
+                      {g.pts}pts · {g.reb}reb · {g.ast}ast · {g.blk}blk
                     </span>
                     {isFoulGame(g) && (
-                      <span style={{ fontSize: 8, fontFamily: 'monospace', color: '#dc2626', background: '#fee2e2', padding: '1px 5px', borderRadius: 3 }}>{t.s00_foul}</span>
+                      <span style={{ fontSize: 8, color: '#9a9aaa', fontFamily: 'monospace' }}>{t.s00_foul}</span>
                     )}
                   </div>
                 ))}
