@@ -7,6 +7,7 @@ import wembyData from './data/wemby_data.json'
 import CourtChart from './CourtChart.jsx'
 import VectorField from './VectorField.jsx'
 import ReboundMap from './ReboundMap.jsx'
+import BlockMap from './BlockMap.jsx'
 import './App.css'
 
 const BASE = import.meta.env.BASE_URL
@@ -83,8 +84,11 @@ const T = {
     s04_num: '04', s04_title: 'Rebound Geography',
     s04_desc: 'Where Wembanyama collects rebounds across all three playoff series. The heat map plots the shot-origin of each preceding missed attempt as a rebound zone proxy. Indigo intensity = higher rebound density.',
 
-    s05_num: '05', s05_title: 'Methodology',
-    s05_desc: "How the data was collected, how Wembanyama's on/off status is determined, and how the vector field is computed.",
+    s05_num: '05', s05_title: 'Block Geography',
+    s05_desc: 'Where Wembanyama blocked shots across all three playoff series. Each point represents the origin of the blocked attempt — the court location where the opponent was trying to finish when Wemby got there first.',
+
+    s06_num: '06', s06_title: 'Methodology',
+    s06_desc: "How the data was collected, how Wembanyama's on/off status is determined, and how the vector field is computed.",
 
     court_made:   'Made',
     court_missed: 'Missed',
@@ -125,13 +129,13 @@ const T = {
 
     conclusion_label: 'Conclusion',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `Most defensive analysis counts what Wembanyama does: blocks, contested shots, altered finishes. This study tries to measure something different — what opponents stop doing when he is on the floor. Across ${games} games and ${attempts} opponent field goal attempts, rivals shot ${on}% with him on court versus ${off}% without. A ${diff} percentage point gap. Modest. But the spatial pattern beneath that number tells a different story.`,
+      `Most defensive analysis counts what Wembanyama does: blocks, contested shots, altered finishes. This study tries to measure something different — what opponents stop doing when he is on the floor. Across ${games} games and ${attempts} opponent field goal attempts, rivals shot ${on}% with him on court versus ${off}% without. A ${diff} percentage point gap. That number is real. But it understates the effect — because the gap grew with the strength of the opponent. Against Portland: 0.6 points. Against Minnesota: 2.6. Against Oklahoma City: 10.4. The better the opponent, the more it seemed to matter where he was.`,
 
     ch_title: 'The Forbidden Zone',
-    ch_text:  "The most significant finding in the data is not at the rim. It is at short mid-range — the range roughly 4 to 8 feet from the basket. That is where opponent attempt rates collapse most sharply when Wembanyama is on the floor. Opponents are not avoiding the paint entirely. They are avoiding a specific band of the court where his standing reach of 9'8\" makes any standard finish unreliable. Not because he will necessarily block the shot. Because they know before they catch the ball that the margin for error at that distance, against that wingspan, is close to zero. That behavioral shift — decisions made before a play happens — is what the vector field is mapping. It is not measuring defensive results. It is measuring the geometry of what opponents are willing to attempt.",
+    ch_text:  "The strongest spatial signal in the data is not efficiency — it is volume. When Wembanyama is on the court, opponents attempted 13.9 percentage points fewer shots from inside the paint against Minnesota, and 11.6 fewer against Oklahoma City. Against Portland the paint avoidance barely registered. That asymmetry is the finding: the better the opponent, the more deliberately they rerouted their offense around the interior. The shots they redirected went to the three-point line, where opponents shot 5.9 percentage points worse with Wembanyama on the floor. They are not losing at the rim. They are deciding not to go there. That behavioral geometry — decisions made before a play develops — is what the vector field is mapping. Not results. Choices.",
 
     cg_title: 'A New G.O.A.T.?',
-    cg_text:  "The GOAT conversation is for later. Jordan's bar is six rings and six Finals MVPs without losing a series. LeBron's bar is 20+ years of sustained greatness across four franchises. Wembanyama hasn't done any of that — and that's fine, because he's 22. What the data in this study already shows is something the league has never produced at this age: a player averaging 4+ blocks per game across his first two full playoff series while simultaneously posting 26 points against Portland and 23 against Minnesota — and then 30 in the Conference Finals. In Game 1 against OKC, on the road, in overtime, he put up 41 points and 24 rebounds. That is not a defensive specialist. That is a player threatening to be the best on both ends of the floor at the same time. The health question is real. Give it time.",
+    cg_text:  "The GOAT conversation is for later. Jordan's bar is six rings and six Finals MVPs without losing a series. LeBron's bar is 20 years of sustained greatness across four franchises. Wembanyama hasn't done any of that — and that's fine, because he's 22 and the Conference Finals against Oklahoma City is still tied 2-2. What the data in this study already shows is something the league has not produced at this age: a player with 53 tracked blocks across 15 playoff games while averaging 26 points against Portland, 23 against Minnesota, and 30 in the Conference Finals so far. In Game 1 against Minnesota he registered 12 blocks. In Game 1 against OKC, on the road, in overtime, he finished with 41 points and 24 rebounds. That is not a defensive specialist. That is a player threatening to be the best on both ends of the floor at the same time — and neither side of that argument has been settled yet.",
 
     kicker1: "This study is not about Wembanyama.",
     kicker2: "It is about what the court looks like when he is on it.",
@@ -201,8 +205,11 @@ const T = {
     s04_num: '04', s04_title: 'Geografía de Rebotes',
     s04_desc: 'Dónde captura rebotes Wembanyama en las tres series de playoffs. El mapa de calor usa las coordenadas del tiro fallado anterior como proxy de la zona de rebote. Mayor intensidad = mayor densidad de rebotes.',
 
-    s05_num: '05', s05_title: 'Metodología',
-    s05_desc: 'Cómo se recopilaron los datos, cómo se determina el estado en/fuera de cancha de Wembanyama, y cómo se calcula el campo vectorial.',
+    s05_num: '05', s05_title: 'Geografía de Bloqueos',
+    s05_desc: 'Dónde bloqueó tiros Wembanyama en las tres series de playoffs. Cada punto representa el origen del intento bloqueado — la zona de la cancha donde el rival intentaba anotar cuando Wemby llegó primero.',
+
+    s06_num: '06', s06_title: 'Metodología',
+    s06_desc: 'Cómo se recopilaron los datos, cómo se determina el estado en/fuera de cancha de Wembanyama, y cómo se calcula el campo vectorial.',
 
     court_made:   'Anotado',
     court_missed: 'Fallado',
@@ -243,13 +250,13 @@ const T = {
 
     conclusion_label: 'Conclusión',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `La mayoría del análisis defensivo cuenta lo que Wembanyama hace: bloqueos, tiros contestados, bandejas alteradas. Este estudio intenta medir algo diferente — lo que los rivales dejan de intentar cuando él está en cancha. En ${games} partidos y ${attempts} intentos de tiro, los rivales anotaron el ${on}% con él en cancha frente al ${off}% sin él. Una diferencia de ${diff} puntos porcentuales. Modesta. Pero el patrón espacial debajo de ese número cuenta una historia distinta.`,
+      `La mayoría del análisis defensivo cuenta lo que Wembanyama hace: bloqueos, tiros contestados, bandejas alteradas. Este estudio intenta medir algo diferente — lo que los rivales dejan de intentar cuando él está en cancha. En ${games} partidos y ${attempts} intentos de tiro, los rivales anotaron el ${on}% con él en cancha frente al ${off}% sin él. Una diferencia de ${diff} puntos porcentuales. Ese número es real. Pero subestima el efecto — porque la brecha creció con la calidad del rival. Contra Portland: 0.6 puntos. Contra Minnesota: 2.6. Contra Oklahoma City: 10.4. Cuanto mejor el rival, más parecía importar dónde estaba él.`,
 
     ch_title: 'La Zona Prohibida',
-    ch_text:  "El hallazgo más significativo en los datos no está en el aro. Está en el tiro corto de media distancia — el rango de aproximadamente 1.2 a 2.4 metros del aro. Ahí es donde la tasa de intentos rivales colapsa con mayor fuerza cuando Wembanyama está en cancha. Los rivales no evitan completamente la pintura. Evitan una banda específica de la cancha donde su alcance de pie de 2.95 metros hace que cualquier finalización estándar sea poco confiable. No porque vaya a bloquear el tiro necesariamente. Sino porque saben antes de recibir el balón que el margen de error a esa distancia, contra esa envergadura, es casi cero. Ese desplazamiento conductual — decisiones tomadas antes de que ocurra una jugada — es lo que el campo vectorial está mapeando. No mide resultados defensivos. Mide la geometría de lo que los rivales están dispuestos a intentar.",
+    ch_text:  "La señal espacial más fuerte en los datos no es de eficiencia — es de volumen. Con Wembanyama en cancha, los rivales intentaron 13.9 puntos porcentuales menos tiros desde dentro de la pintura contra Minnesota, y 11.6 menos contra Oklahoma City. Contra Portland la evasión de la pintura apenas se registró. Esa asimetría es el hallazgo: cuanto mejor el rival, más deliberadamente redirigió su ataque lejos del interior. Los tiros que redirigieron fueron al perímetro de tres puntos, donde los rivales anotaron 5.9 puntos porcentuales menos con Wembanyama en cancha. No están perdiendo en el aro. Están decidiendo no llegar ahí. Esa geometría conductual — decisiones tomadas antes de que se desarrolle una jugada — es lo que el campo vectorial está mapeando. No resultados. Elecciones.",
 
     cg_title: '¿Un Nuevo G.O.A.T.?',
-    cg_text:  "La conversación del GOAT es para después. El estándar de Jordan son seis anillos y seis MVP de Finales sin perder una serie. El de LeBron son más de 20 años de grandeza sostenida en cuatro franquicias. Wembanyama no ha hecho nada de eso todavía — y está bien, tiene 22 años. Lo que los datos de este estudio ya muestran es algo que la liga no había producido a esta edad: un jugador promediando más de 4 bloqueos por partido en sus primeras dos series completas de playoffs mientras anotaba 26 puntos contra Portland y 23 contra Minnesota — y luego 30 en las Finales de Conferencia. En el Juego 1 contra OKC, de visitante, en tiempo extra, anotó 41 puntos y capturó 24 rebotes. Eso no es un especialista defensivo. Es un jugador que amenaza con ser el mejor en ambos extremos de la cancha al mismo tiempo. La pregunta de salud es real. Dale tiempo.",
+    cg_text:  "La conversación del GOAT es para después. El estándar de Jordan son seis anillos y seis MVP de Finales sin perder una serie. El de LeBron son 20 años de grandeza sostenida en cuatro franquicias. Wembanyama no ha hecho nada de eso todavía — y está bien, tiene 22 años y las Finales de Conferencia contra Oklahoma City siguen igualadas 2-2. Lo que los datos de este estudio ya muestran es algo que la liga no había producido a esta edad: un jugador con 53 bloqueos rastreados en 15 partidos de playoffs promediando 26 puntos contra Portland, 23 contra Minnesota y 30 en las Finales de Conferencia hasta ahora. En el Juego 1 contra Minnesota registró 12 bloqueos. En el Juego 1 contra OKC, de visitante, en tiempo extra, terminó con 41 puntos y 24 rebotes. Eso no es un especialista defensivo. Es un jugador que amenaza con ser el mejor en ambos extremos de la cancha al mismo tiempo — y ninguno de los dos lados de ese argumento se ha resuelto todavía.",
 
     kicker1: "Este estudio no es sobre Wembanyama.",
     kicker2: "Es sobre cómo se ve la cancha cuando él está en ella.",
@@ -560,7 +567,7 @@ function Methodology({ stats, t }) {
       style={{ padding: '56px 5vw 48px' }}
       id="methodology"
     >
-      <SectionHead num={t.s05_num} title={t.s05_title} desc={t.s05_desc} />
+      <SectionHead num={t.s06_num} title={t.s06_title} desc={t.s06_desc} />
 
       <div className="grid grid-cols-2" style={{ gap: '40px 56px' }}>
 
@@ -966,6 +973,12 @@ export default function App() {
       <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="rebounds">
         <SectionHead num={t.s04_num} title={t.s04_title} desc={t.s04_desc} />
         <ReboundMap reboundData={wembyData.wemby_rebounds ?? null} lang={lang} />
+      </section>
+
+      {/* ── 05 / BLOCK GEOGRAPHY ─────────────────────────────────────────────── */}
+      <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="blocks">
+        <SectionHead num={t.s05_num} title={t.s05_title} desc={t.s05_desc} />
+        <BlockMap blockData={wembyData.wemby_blocks ?? null} lang={lang} />
       </section>
 
       {/* ── CONCLUSION ───────────────────────────────────────────────────────── */}
