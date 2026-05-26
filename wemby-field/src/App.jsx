@@ -9,6 +9,8 @@ import VectorField from './VectorField.jsx'
 import ReboundMap from './ReboundMap.jsx'
 import './App.css'
 
+const BASE = import.meta.env.BASE_URL
+
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 
 const SERIES_CONFIG = {
@@ -36,8 +38,8 @@ const T = {
 
     filter_label: 'Filter by series — click to toggle',
 
-    intro_bio1: "Victor Wembanyama, born January 4, 2004, is the center of the San Antonio Spurs and the first overall pick of the 2023 NBA Draft. At 7'3\" (2.24 m) with a 7'9\" (2.36 m) wingspan, he is the most imposing defensive specimen in modern NBA history — a player who can contest shots from the perimeter while commanding the interior.",
-    intro_bio2: "In his first two NBA seasons he became the first player in league history to average 26+ points, 10+ rebounds, 3+ assists, 3+ blocks, and 1+ steal per game in the same season. By the 2025–26 Playoffs, he had transformed the Spurs into a legitimate title contender. This study maps one question: how does his presence reshape the geometry of what opponents dare to attempt?",
+    intro_bio1: "Victor Wembanyama, born January 4, 2004, is the center of the San Antonio Spurs and the first overall pick of the 2023 NBA Draft. At 7'3\" with a 7'9\" wingspan, the assumption was always that a player built this way could protect the rim — but would be exposed on the perimeter, lack agility, and struggle to create offense. Wembanyama didn't challenge that assumption. He erased it.",
+    intro_bio2: "He keeps up with point guards in space, pulls up for logo threes, passes like a forward, and handles the ball in traffic behind his back. In his first two seasons he became the only player in league history to average 26+ points, 10+ rebounds, 3+ assists, 3+ blocks, and 1+ steal in the same season. Think of it like Shohei Ohtani arriving in baseball — sometimes a player comes along who simply redefines the boundaries of what we thought was physically possible in a sport. This study maps what that looks like in the data.",
     intro_m: [
       { val: '22',              label: 'Age (2025–26)'  },
       { val: "7'3\" / 2.24 m", label: 'Height'         },
@@ -69,6 +71,14 @@ const T = {
     serie_label: 'Series',
     games_label: 'games',
     tooltip_hint: 'solid = Wemby on court · dashed = Wemby on bench',
+
+    s00_num: '00', s00_title: 'Wemby on Both Ends',
+    s00_desc: "The defensive study is the focus of this project — but Wembanyama's impact doesn't start on defense. Per-game stats from all 15 playoff games show a player operating at an elite level offensively and defensively simultaneously.",
+    s00_pts: 'PTS', s00_reb: 'REB', s00_ast: 'AST', s00_blk: 'BLK',
+    s00_game: 'G', s00_win: 'W', s00_loss: 'L',
+    s00_highlight_okc: 'Game 1 vs OKC — on the road, in overtime, with the series on the line: 41 pts · 24 reb · clutch 3-pointer to force OT.',
+    s00_avg_label: 'Series averages',
+    s00_foul: 'foul trouble',
 
     s04_num: '04', s04_title: 'Rebound Geography',
     s04_desc: 'Where Wembanyama collects rebounds across all three playoff series. The heat map plots the shot-origin of each preceding missed attempt as a rebound zone proxy. Indigo intensity = higher rebound density.',
@@ -105,7 +115,7 @@ const T = {
     mb4_p3b: ' total attempts',
 
     mb5_title: 'Limitations',
-    mb5_p1: 'Sample sizes are constrained by playoff series length (5–6 games per series, 13 games total). The on/off split does not control for which other four Spurs players share the court with Wembanyama — bench units defending while he rests may systematically differ in quality from starting units.',
+    mb5_p1: 'Sample sizes are constrained by playoff series length (5–6 games per series, 15 games total). The on/off split does not control for which other four Spurs players share the court with Wembanyama — bench units defending while he rests may systematically differ in quality from starting units.',
     mb5_p2: 'Opponent shot selection and game state (e.g., late-game garbage time) are not filtered. The gradient estimate is sensitive to bin size. Larger bins smooth noise but reduce spatial resolution; smaller bins amplify variance.',
 
     mb6_title: 'Shot Chart — Efficiency',
@@ -115,18 +125,18 @@ const T = {
 
     conclusion_label: 'Conclusion',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `Across ${games} games and ${attempts} opponent field goal attempts in the 2025–26 NBA Playoffs, Victor Wembanyama's defensive presence produced a consistent and measurable deformation in opponent shot geometry. Rivals attempted shots at ${on}% efficiency with him on court versus ${off}% without — a difference of ${diff} percentage points.`,
+      `Across ${games} games and ${attempts} opponent field goal attempts in the 2025–26 NBA Playoffs, Victor Wembanyama's defensive presence produced a measurable shift in opponent shot selection. Rivals attempted shots at ${on}% efficiency with him on court versus ${off}% without — a difference of ${diff} percentage points. The aggregate gap is modest. The spatial pattern beneath it is more revealing.`,
 
     ch_title: 'The Height Question',
-    ch_text:  "Is it simply his size? At 7'3\" with a 7'9\" wingspan and a 9'8\" standing reach, Wembanyama covers court geography that no player in NBA history has before him. But the data resists a purely anthropometric explanation. Taller players have existed — none produced a spatial deformation this consistent. What sets Wembanyama apart is that he suppresses paint attempts while simultaneously forcing opponents out to lower-percentage perimeter positions. This is not a body doing one thing well. This is a body reorganizing the entire offensive environment around its presence.",
+    ch_text:  "The shot chart shows opponents still attacking the rim with Wembanyama on the floor — the paint doesn't empty. What changes is the geometry required. Against a 9'8\" standing reach, a direct-angle finish becomes much harder. The shooter needs a higher arc, a wider approach, a more precise release. The shot happens — the margin for error shrinks. That's the signal in the data: not fewer rim attempts overall, but a 7.6 percentage point drop in restricted area attempts as a share of the shot diet. Whether that gap is explained purely by height or by something harder to measure — court awareness, positioning, timing — the data can't say. What it can say is that the pattern is consistent across all three series.",
 
     cg_title: 'A New G.O.A.T.?',
-    cg_text:  "It is too early for the title. But the evidence accumulating is unprecedented for a player at 21 years of age. His defensive spatial deformation surpasses what was observed from prime Hakeem, prime Mutombo, even prime Wilt at comparable career stages. The vector field does not lie: when Wembanyama enters the game, the court itself changes. Whether that makes him the greatest ever remains a story still being written — but through two playoff runs, the opening chapters read like nothing the league has seen before.",
+    cg_text:  "The GOAT conversation is for later. Jordan's bar is six rings and six Finals MVPs without losing a series. LeBron's bar is 20+ years of sustained greatness across four franchises. Wembanyama hasn't done any of that — and that's fine, because he's 22. What the data in this study already shows is something the league has never produced at this age: a player posting 26.3 pts, 10.3 reb, and 5 blocks per series against Portland, then 23 pts and 5 blocks against Minnesota, then 30 pts and 3 blocks in the Conference Finals — all while shifting opponent shot selection simultaneously. In Game 1 against OKC, on the road, in overtime, he put up 41 points and 24 rebounds. That's not a defensive specialist. That's a player threatening to be the best on both ends of the floor at the same time. No one in the modern era has done that. The health question is real. Give it time. Watch the results build.",
 
-    kicker1: 'He does not merely block shots.',
-    kicker2: 'He bends the field.',
+    kicker1: "The effect is subtle. The data shows a shift in shot selection,",
+    kicker2: "not a shutdown. That distinction matters.",
 
-    photo_break_quote: 'When Wembanyama enters the game, the court itself changes.',
+    photo_break_quote: "The numbers are modest. The spatial pattern is real.",
 
     footer_data:   'Data: NBA Stats API · stats.nba.com',
     footer_on_off: 'On/off classification via PlayByPlayV3 substitution events',
@@ -146,8 +156,8 @@ const T = {
 
     filter_label: 'Filtrar por serie — clic para alternar',
 
-    intro_bio1: 'Victor Wembanyama, nacido el 4 de enero de 2004, es el pívot de los San Antonio Spurs y la primera selección global del Draft NBA 2023. Con 2.24 m de altura y 2.36 m de envergadura, es el espécimen defensivo más imponente de la historia moderna de la NBA — un jugador capaz de contestar tiros desde el perímetro mientras domina la pintura.',
-    intro_bio2: 'En sus primeras dos temporadas en la NBA se convirtió en el primer jugador en la historia de la liga en promediar 26+ puntos, 10+ rebotes, 3+ asistencias, 3+ tapones y 1+ robo por partido en la misma temporada. Para los Playoffs 2025–26 había transformado a los Spurs en un verdadero contendiente al título. Este estudio responde una pregunta: ¿cómo redefine su presencia la geometría de lo que los rivales se atreven a intentar?',
+    intro_bio1: "Victor Wembanyama, nacido el 4 de enero de 2004, es el pívot de los San Antonio Spurs y la primera selección global del Draft NBA 2023. Con 2.24 m de altura y 2.36 m de envergadura, el supuesto siempre fue que un jugador construido así podría proteger el aro — pero quedaría expuesto en el perímetro, le faltaría agilidad y tendría dificultades para crear ofensiva. Wembanyama no desafió ese supuesto. Lo borró.",
+    intro_bio2: "Sigue a bases en espacios abiertos, anota triples desde el logo, pasa como un alero y maneja el balón en tráfico tras su espalda. En sus primeras dos temporadas se convirtió en el único jugador en la historia de la liga en promediar 26+ puntos, 10+ rebotes, 3+ asistencias, 3+ tapones y 1+ robo en la misma temporada. Piénsenlo como la llegada de Shohei Ohtani al béisbol — a veces aparece un jugador que simplemente redefine los límites de lo que creíamos físicamente posible en un deporte. Este estudio mapea cómo se ve eso en los datos.",
     intro_m: [
       { val: '22',        label: 'Edad (2025–26)' },
       { val: '2.24 m',    label: 'Estatura'       },
@@ -179,6 +189,14 @@ const T = {
     serie_label: 'Serie',
     games_label: 'partidos',
     tooltip_hint: 'continua = Wemby en cancha · discontinua = Wemby en banca',
+
+    s00_num: '00', s00_title: 'Wemby en Ambos Lados',
+    s00_desc: 'El estudio defensivo es el foco de este proyecto — pero el impacto de Wembanyama no empieza en defensa. Las estadísticas por partido en los 15 juegos de playoffs muestran a un jugador operando a nivel élite en ambos extremos de la cancha simultáneamente.',
+    s00_pts: 'PTS', s00_reb: 'REB', s00_ast: 'AST', s00_blk: 'BLK',
+    s00_game: 'J', s00_win: 'G', s00_loss: 'P',
+    s00_highlight_okc: 'Juego 1 vs OKC — de visitante, en tiempo extra, con la serie en juego: 41 pts · 24 reb · triple clave para forzar el tiempo extra.',
+    s00_avg_label: 'Promedios por serie',
+    s00_foul: 'faltas',
 
     s04_num: '04', s04_title: 'Geografía de Rebotes',
     s04_desc: 'Dónde captura rebotes Wembanyama en las tres series de playoffs. El mapa de calor usa las coordenadas del tiro fallado anterior como proxy de la zona de rebote. Mayor intensidad = mayor densidad de rebotes.',
@@ -215,7 +233,7 @@ const T = {
     mb4_p3b: ' intentos en total',
 
     mb5_title: 'Limitaciones',
-    mb5_p1: 'Los tamaños de muestra están limitados por la duración de las series (5–6 partidos por serie, 13 en total). La división dentro/fuera no controla qué otros cuatro jugadores de los Spurs comparten cancha con Wembanyama — los quintetos de reserva pueden diferir sistemáticamente en calidad de los titulares.',
+    mb5_p1: 'Los tamaños de muestra están limitados por la duración de las series (5–6 partidos por serie, 15 en total). La división dentro/fuera no controla qué otros cuatro jugadores de los Spurs comparten cancha con Wembanyama — los quintetos de reserva pueden diferir sistemáticamente en calidad de los titulares.',
     mb5_p2: 'La selección de tiro rival y el estado del partido no se filtran. La estimación del gradiente es sensible al tamaño del compartimento. Compartimentos más grandes suavizan el ruido pero reducen la resolución espacial; los más pequeños amplían la varianza.',
 
     mb6_title: 'Gráfico de Tiro — Eficiencia',
@@ -225,18 +243,18 @@ const T = {
 
     conclusion_label: 'Conclusión',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `En ${games} partidos y ${attempts} intentos de tiro rival en los Playoffs NBA 2025–26, la presencia defensiva de Victor Wembanyama produjo una deformación consistente y medible en la geometría de tiro rival. Los rivales intentaron tiros con una eficiencia del ${on}% con él en cancha frente al ${off}% sin él — una diferencia de ${diff} puntos porcentuales.`,
+      `En ${games} partidos y ${attempts} intentos de tiro rival en los Playoffs NBA 2025–26, la presencia defensiva de Victor Wembanyama produjo un cambio medible en la selección de tiros rival. Los rivales anotaron con una eficiencia del ${on}% con él en cancha frente al ${off}% sin él — una diferencia de ${diff} puntos porcentuales. La brecha agregada es modesta. El patrón espacial que hay debajo es más revelador.`,
 
     ch_title: '¿Es Solo la Altura?',
-    ch_text:  'Con 2.24 m de altura, 2.36 m de envergadura y 2.95 m de alcance de pie, Wembanyama cubre una geografía de cancha que ningún jugador en la historia de la NBA había cubierto antes. Pero los datos resisten una explicación puramente antropométrica. Han existido jugadores más altos — ninguno produjo una deformación espacial tan consistente. Lo que distingue a Wembanyama es que suprime los intentos en la pintura mientras obliga simultáneamente a los rivales hacia posiciones perimetrales de menor porcentaje. No es un cuerpo haciendo una sola cosa bien. Es un cuerpo reorganizando todo el entorno ofensivo en torno a su presencia.',
+    ch_text:  "El mapa de tiros muestra que los rivales siguen atacando la pintura con Wembanyama en cancha — la zona no queda vacía. Lo que cambia es la geometría requerida del intento. Contra un alcance de pie de 2.95 m, una bandeja de ángulo directo se vuelve mucho más difícil. El lanzador necesita una parábola más alta, un ángulo de entrada más amplio, una soltura más precisa. El tiro ocurre — el margen de error se reduce. Esa es la señal en los datos: no menos intentos en el aro en términos absolutos, sino una caída de 7.6 puntos porcentuales en la proporción de intentos en el área restringida. Si esa diferencia se explica puramente por la altura o por algo más difícil de medir — lectura de cancha, posicionamiento, timing — los datos no lo dicen. Lo que sí dicen es que el patrón es consistente en las tres series.",
 
     cg_title: '¿Un Nuevo G.O.A.T.?',
-    cg_text:  'Es demasiado pronto para el título. Pero la evidencia que se acumula es sin precedentes para un jugador de 21 años. Su deformación espacial defensiva supera lo que observamos en el prime de Hakeem, el prime de Mutombo, incluso el prime de Wilt en etapas comparables de sus carreras. El campo vectorial no miente: cuando Wembanyama entra al partido, la cancha misma cambia. Si eso lo convierte en el mejor de todos los tiempos es una historia que aún se está escribiendo — pero en dos rondas de playoffs, los primeros capítulos se leen como nada que la liga haya visto antes.',
+    cg_text:  "La conversación del GOAT es para después. El estándar de Jordan es seis anillos y seis MVP de Finales sin perder una serie. El de LeBron son más de 20 años de grandeza sostenida en cuatro franquicias. Wembanyama no ha hecho nada de eso todavía — y está bien, tiene 22 años. Lo que los datos de este estudio ya muestran es algo que la liga no había producido a esta edad: 26.3 pts y 5 bloqueos por serie contra Portland, 23 pts y 5 bloqueos contra Minnesota, 30 pts y 3 bloqueos en las Finales de Conferencia — todo mientras desplaza la selección de tiros rivales simultáneamente. En el Juego 1 contra OKC, de visitante, en tiempo extra, anotó 41 puntos y capturó 24 rebotes. Eso no es un especialista defensivo. Es un jugador que amenaza con ser el mejor en ambos extremos de la cancha al mismo tiempo. Nadie en la era moderna ha hecho eso. La pregunta de salud es real. Dale tiempo. Observa los resultados acumularse.",
 
-    kicker1: 'No solo tapona tiros.',
-    kicker2: 'Dobla el campo.',
+    kicker1: "El efecto es sutil. Los datos muestran un cambio en la selección de tiros,",
+    kicker2: "no un apagón defensivo. Esa distinción importa.",
 
-    photo_break_quote: 'Cuando Wembanyama entra al partido, la cancha misma cambia.',
+    photo_break_quote: "Los números son modestos. El patrón espacial es real.",
 
     footer_data:   'Datos: NBA Stats API · stats.nba.com',
     footer_on_off: 'Clasificación dentro/fuera vía eventos de sustitución PlayByPlayV3',
@@ -325,12 +343,12 @@ function SeriesBadge({ serieKey, active, onClick }) {
 
 function SectionHead({ num, title, desc }) {
   return (
-    <div className="section-head">
-      <div className="section-head-top">
-        <span className="section-num">{num}</span>
-        <h2 className="section-title">{title}</h2>
+    <div style={{ marginBottom: '28px' }}>
+      <div className="flex items-baseline" style={{ gap: '14px', marginBottom: '10px' }}>
+        <span className="font-mono font-bold tracking-[0.2em] text-[#7a7a8a] shrink-0" style={{ fontSize: '10px' }}>{num}</span>
+        <h2 className="font-black tracking-[-0.02em] text-[#08080f] uppercase leading-none" style={{ fontSize: '26px' }}>{title}</h2>
       </div>
-      {desc && <p className="section-desc">{desc}</p>}
+      {desc && <p className="font-serif text-[#38384a] leading-[1.7]" style={{ fontSize: '14px', maxWidth: '680px' }}>{desc}</p>}
     </div>
   )
 }
@@ -339,22 +357,46 @@ function SectionHead({ num, title, desc }) {
 
 function IntroStrip({ t }) {
   return (
-    <div className="intro-strip">
-      <div className="intro-content">
-        <div className="intro-text">
-          <p className="intro-eyebrow">Victor Wembanyama · No. 1 · San Antonio Spurs</p>
-          <p className="intro-bio">{t.intro_bio1}</p>
-          <p className="intro-bio">{t.intro_bio2}</p>
+    <div className="border-b border-black/[0.11] overflow-hidden" style={{ position: 'relative' }}>
+      {/* Left — determines container height; right margin reserves space for photo */}
+      <div className="intro-content" style={{ padding: '40px 5vw' }}>
+        <p
+          className="font-mono font-bold tracking-[0.25em] text-[#1d4ed8] uppercase"
+          style={{ fontSize: '8px', marginBottom: '14px', textShadow: '0 0 8px rgba(29,78,216,0.3)' }}
+        >
+          Victor Wembanyama · No. 1 · San Antonio Spurs
+        </p>
+        <p className="font-serif text-[#38384a] leading-[1.78] text-justify" style={{ fontSize: '14px', marginBottom: '12px' }}>{t.intro_bio1}</p>
+        <p className="font-serif text-[#38384a] leading-[1.78] text-justify" style={{ fontSize: '14px', marginBottom: '14px' }}>{t.intro_bio2}</p>
+        <div
+          className="measurements-bar flex border border-black/[0.11] rounded-lg overflow-hidden bg-[#f0f0f3]"
+          style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.04), 0 0 20px rgba(29,78,216,0.06)' }}
+        >
+          {t.intro_m.map((m, i) => (
+            <div
+              key={m.label}
+              className="measurements-cell flex flex-col flex-1"
+              style={{
+                padding: '10px 18px',
+                gap: '2px',
+                borderRight: i < t.intro_m.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none',
+                minWidth: '80px',
+              }}
+            >
+              <span className="font-mono font-black text-[#08080f]" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{m.val}</span>
+              <span className="font-mono font-bold uppercase text-[#7a7a8a]" style={{ fontSize: '7px', letterSpacing: '0.15em' }}>{m.label}</span>
+            </div>
+          ))}
         </div>
-        <img src="/wemby1.jpg" alt="Victor Wembanyama" className="intro-image" />
       </div>
-      <div className="intro-measurements">
-        {t.intro_m.map(m => (
-          <div key={m.label} className="intro-m-item">
-            <span className="intro-m-val">{m.val}</span>
-            <span className="intro-m-label">{m.label}</span>
-          </div>
-        ))}
+      {/* Right — absolutely positioned, fills exactly the height the text occupies */}
+      <div className="sidebar-photo" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '38%' }}>
+        <img
+          src={`${BASE}wemby2.jpg`}
+          alt="Wembanyama"
+          className="w-full h-full object-cover block"
+          style={{ objectPosition: 'center 10%' }}
+        />
       </div>
     </div>
   )
@@ -362,14 +404,24 @@ function IntroStrip({ t }) {
 
 // ── PHOTO BREAKS ──────────────────────────────────────────────────────────────
 
-// wemby1 — split panel between intro and section 01
-// [REMOVED]
+function PhotoSplit() {
+  return (
+    <div className="photo-split">
+      <div className="photo-split-img-wrap">
+        <img src={`${BASE}wemby1.jpg`} alt="Wembanyama towering above defender" className="photo-split-img" />
+      </div>
+      <div className="photo-split-stat">
+        <span className="photo-split-num">7'3"</span>
+        <span className="photo-split-label">Tallest player<br />in Spurs history</span>
+      </div>
+    </div>
+  )
+}
 
-// wemby3 — full-width cinematic break with quote
 function PhotoBreak({ quote }) {
   return (
     <div className="photo-break">
-      <img src="/wemby3.jpg" alt="Wembanyama block" className="photo-break-img" />
+      <img src={`${BASE}wemby3.jpg`} alt="Wembanyama block" className="photo-break-img" />
       <div className="photo-break-overlay">
         <p className="photo-break-quote">"{quote}"</p>
       </div>
@@ -377,29 +429,177 @@ function PhotoBreak({ quote }) {
   )
 }
 
+// ── WEMBY STATS ───────────────────────────────────────────────────────────────
+
+const SERIES_CONFIG_STATS = {
+  'R1 · POR': { label: 'Round 1',        opp: 'Portland Trail Blazers', abbr: 'POR', color: '#e03a3e', result: '4–1' },
+  'R2 · MIN': { label: 'Round 2',        opp: 'Minnesota Timberwolves', abbr: 'MIN', color: '#236192', result: '4–2' },
+  'ECF · OKC': { label: 'Conf. Finals',  opp: 'Oklahoma City Thunder',  abbr: 'OKC', color: '#007ac1', result: '2–2' },
+};
+
+function TeamLogo({ teamId, size = 40 }) {
+  return (
+    <img
+      src={`https://cdn.nba.com/logos/nba/${teamId}/global/L/logo.svg`}
+      alt=""
+      style={{ width: size, height: size, objectFit: 'contain' }}
+      onError={e => { e.target.style.display = 'none'; }}
+    />
+  );
+}
+
+const TEAM_IDS = { POR: 1610612757, MIN: 1610612750, OKC: 1610612760 };
+
+function WembyStats({ gameStats, t }) {
+  if (!gameStats || !gameStats.length) return null;
+
+  const seriesKeys = ['R1 · POR', 'R2 · MIN', 'ECF · OKC'];
+
+  function avg(games, key) {
+    const vals = games.map(g => g[key]).filter(v => v != null);
+    return vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
+  }
+
+  const isFoulGame = g => {
+    const [m] = (g.min || '0:0').split(':');
+    return parseInt(m, 10) < 20;
+  };
+
+  return (
+    <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="wemby-stats">
+      <SectionHead num={t.s00_num} title={t.s00_title} desc={t.s00_desc} />
+
+      {/* OKC G1 note */}
+      <div style={{
+        borderLeft: '3px solid #007ac1', paddingLeft: 16, marginBottom: 40,
+      }}>
+        <p style={{ color: '#555566', fontSize: 14, lineHeight: 1.7, margin: 0, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+          {t.s00_highlight_okc}
+        </p>
+      </div>
+
+      {/* Per-series cards */}
+      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 40 }}>
+        {seriesKeys.map(sk => {
+          const cfg = SERIES_CONFIG_STATS[sk];
+          const games = gameStats.filter(g => g.serie === sk);
+          const fullGames = games.filter(g => !isFoulGame(g));
+
+          return (
+            <div key={sk} style={{
+              flex: '1 1 260px', border: '1px solid #e8e8ee',
+              borderRadius: 8, overflow: 'hidden',
+            }}>
+              {/* Card header */}
+              <div style={{
+                background: cfg.color, padding: '14px 18px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <TeamLogo teamId={TEAM_IDS[cfg.abbr]} size={36} />
+                  <div>
+                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.15em', margin: 0 }}>{cfg.label.toUpperCase()}</p>
+                    <p style={{ color: '#fff', fontSize: 13, fontWeight: 700, margin: 0 }}>{cfg.opp}</p>
+                  </div>
+                </div>
+                <span style={{ color: '#fff', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}>{cfg.result}</span>
+              </div>
+
+              {/* Averages */}
+              <div style={{ padding: '14px 18px 6px', borderBottom: '1px solid #f0f0f4' }}>
+                <p style={{ fontSize: 9, fontFamily: 'monospace', color: '#9a9aaa', letterSpacing: '0.15em', margin: '0 0 10px' }}>{t.s00_avg_label.toUpperCase()}</p>
+                <div style={{ display: 'flex', gap: 0 }}>
+                  {[
+                    { key: 'pts', label: t.s00_pts },
+                    { key: 'reb', label: t.s00_reb },
+                    { key: 'ast', label: t.s00_ast },
+                    { key: 'blk', label: t.s00_blk },
+                  ].map(({ key, label }) => (
+                    <div key={key} style={{ flex: 1, textAlign: 'center' }}>
+                      <p style={{ fontSize: 22, fontWeight: 700, color: '#08080f', margin: 0, fontFamily: 'monospace' }}>
+                        {avg(fullGames, key).toFixed(1)}
+                      </p>
+                      <p style={{ fontSize: 9, color: '#9a9aaa', letterSpacing: '0.1em', margin: 0, fontFamily: 'monospace' }}>{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Per-game log */}
+              <div style={{ padding: '8px 18px 14px' }}>
+                {games.map(g => (
+                  <div key={g.game_id} style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '5px 0', borderBottom: '1px solid #f4f4f7',
+                    opacity: isFoulGame(g) ? 0.45 : 1,
+                  }}>
+                    <span style={{
+                      fontSize: 9, fontFamily: 'monospace', fontWeight: 700,
+                      color: g.result === 'W' ? '#16a34a' : '#dc2626',
+                      width: 28,
+                    }}>{t.s00_game}{g.game_num} {g.result === 'W' ? t.s00_win : t.s00_loss}</span>
+                    <span style={{ fontSize: 12, fontFamily: 'monospace', color: '#38384a', flex: 1 }}>
+                      <b>{g.pts}</b>pts · <b>{g.reb}</b>reb · <b>{g.ast}</b>ast · <b>{g.blk}</b>blk
+                    </span>
+                    {isFoulGame(g) && (
+                      <span style={{ fontSize: 8, fontFamily: 'monospace', color: '#dc2626', background: '#fee2e2', padding: '1px 5px', borderRadius: 3 }}>{t.s00_foul}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 // ── METHODOLOGY ───────────────────────────────────────────────────────────────
 
 function Methodology({ stats, t }) {
   return (
-    <section className="section methodology-section" id="methodology">
+    <section
+      className="border-b border-black/[0.07] bg-[#f0f0f3]"
+      style={{ padding: '56px 5vw 48px' }}
+      id="methodology"
+    >
       <SectionHead num={t.s05_num} title={t.s05_title} desc={t.s05_desc} />
 
-      <div className="method-body">
+      <div className="grid grid-cols-2" style={{ gap: '40px 56px' }}>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">1.</span> {t.mb1_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>1.</span>
+            {t.mb1_title}
+          </h3>
           <p className="method-text">{t.mb1_p1}</p>
-          <p className="method-text" style={{ marginTop: 10 }}>{t.mb1_p2}</p>
+          <p className="method-text" style={{ marginTop: '10px' }}>{t.mb1_p2}</p>
         </div>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">2.</span> {t.mb2_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>2.</span>
+            {t.mb2_title}
+          </h3>
           <p className="method-text">{t.mb2_p1}</p>
-          <p className="method-text" style={{ marginTop: 10 }}>{t.mb2_p2}</p>
+          <p className="method-text" style={{ marginTop: '10px' }}>{t.mb2_p2}</p>
         </div>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">3.</span> {t.mb3_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>3.</span>
+            {t.mb3_title}
+          </h3>
           <p className="method-text">
             {t.mb3_p1a}ρ<sub>on</sub>(x, y){t.mb3_p1b}ρ<sub>off</sub>(x, y){t.mb3_p1c}
           </p>
@@ -409,8 +609,14 @@ function Methodology({ stats, t }) {
           <p className="method-text">{t.mb3_p3}</p>
         </div>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">4.</span> {t.mb4_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>4.</span>
+            {t.mb4_title}
+          </h3>
           <p className="method-text">{t.mb4_p1}</p>
           <div className="method-formula">{t.mb4_f1}</div>
           <p className="method-text">{t.mb4_p2}</p>
@@ -422,17 +628,29 @@ function Methodology({ stats, t }) {
           </p>
         </div>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">5.</span> {t.mb5_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>5.</span>
+            {t.mb5_title}
+          </h3>
           <p className="method-text">{t.mb5_p1}</p>
-          <p className="method-text" style={{ marginTop: 10 }}>{t.mb5_p2}</p>
+          <p className="method-text" style={{ marginTop: '10px' }}>{t.mb5_p2}</p>
         </div>
 
-        <div className="method-block">
-          <h3 className="method-block-title"><span className="method-num">6.</span> {t.mb6_title}</h3>
+        <div>
+          <h3
+            className="font-serif font-bold text-[#08080f] border-b border-black/[0.11]"
+            style={{ fontSize: '14px', marginBottom: '10px', paddingBottom: '8px' }}
+          >
+            <span className="font-mono font-bold tracking-[0.12em] text-[#7a7a8a]" style={{ fontSize: '10px', marginRight: '6px' }}>6.</span>
+            {t.mb6_title}
+          </h3>
           <p className="method-text">{t.mb6_p1}</p>
-          <p className="method-text" style={{ marginTop: 10 }}>{t.mb6_p2}</p>
-          <p className="method-figure-caption" style={{ marginTop: 14 }}>{t.mb6_cap}</p>
+          <p className="method-text" style={{ marginTop: '10px' }}>{t.mb6_p2}</p>
+          <p className="method-figure-caption" style={{ marginTop: '14px' }}>{t.mb6_cap}</p>
         </div>
 
       </div>
@@ -500,7 +718,7 @@ export default function App() {
   const totalGames = Object.values(wembyData.series).reduce((n, s) => n + s.games.length, 0)
 
   return (
-    <div className="app">
+    <div className="w-full">
 
       {/* ── HERO ─────────────────────────────────────────────────────────────── */}
       <header className="hero">
@@ -543,9 +761,9 @@ export default function App() {
       <IntroStrip t={t} />
 
       {/* ── SERIES FILTER ────────────────────────────────────────────────────── */}
-      <div className="series-filter">
-        <p className="series-filter-label">{t.filter_label}</p>
-        <div className="series-badges-row">
+      <div className="border-b border-black/[0.11] bg-[#f0f0f3]" style={{ padding: '16px 5vw' }}>
+        <p className="font-mono font-bold tracking-[0.18em] text-[#7a7a8a] uppercase" style={{ fontSize: '8px', marginBottom: '12px' }}>{t.filter_label}</p>
+        <div className="flex flex-wrap" style={{ gap: '10px' }}>
           {Object.keys(SERIES_CONFIG).map(sk => (
             <SeriesBadge
               key={sk}
@@ -558,21 +776,30 @@ export default function App() {
       </div>
 
       {/* ── 01 / THE FIELD ───────────────────────────────────────────────────── */}
-      <section className="section" id="field">
-        <SectionHead num={t.s01_num} title={t.s01_title} desc={t.s01_desc} />
-        <div className="field-layout">
-          <VectorField seriesData={wembyData.series} activeSeries={activeSeries} lang={lang} />
-          <div className="field-photo-wrap">
-            <img src="/wemby2.jpg" alt="Wembanyama dunk" className="field-photo" />
+      <section className="border-b border-black/[0.07] overflow-hidden" style={{ position: 'relative' }} id="field">
+        {/* Left — chart content determines container height */}
+        <div className="field-content" style={{ padding: '40px 5vw 36px' }}>
+          <SectionHead num={t.s01_num} title={t.s01_title} desc={t.s01_desc} />
+          <div style={{ maxWidth: '420px' }}>
+            <VectorField seriesData={wembyData.series} activeSeries={activeSeries} lang={lang} />
           </div>
+        </div>
+        {/* Right — photo fills exact height of content column */}
+        <div className="sidebar-photo" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '42%' }}>
+          <img
+            src={`${BASE}wemby1.jpg`}
+            alt="Wembanyama dunk"
+            className="w-full h-full object-cover block"
+            style={{ objectPosition: 'center 10%', filter: 'contrast(1.05) brightness(0.92)' }}
+          />
         </div>
       </section>
 
       {/* ── 02 / SHOT GEOGRAPHY ──────────────────────────────────────────────── */}
-      <section className="section" id="shots">
+      <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="shots">
         <SectionHead num={t.s02_num} title={t.s02_title} desc={t.s02_desc} />
 
-        <div className="section-controls">
+        <div className="flex flex-wrap items-center" style={{ gap: '10px', marginBottom: '20px' }}>
           <div className="toggle-group">
             <button
               className={`toggle-btn${courtSerie === 'ALL' ? ' active' : ''}`}
@@ -602,10 +829,10 @@ export default function App() {
       </section>
 
       {/* ── 03 / EFFICIENCY TIMELINE ─────────────────────────────────────────── */}
-      <section className="section" id="efficiency">
+      <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="efficiency">
         <SectionHead num={t.s03_num} title={t.s03_title} desc={t.s03_desc} />
 
-        <div className="section-controls">
+        <div className="flex flex-wrap items-center" style={{ gap: '10px', marginBottom: '20px' }}>
           <div className="toggle-group">
             <button
               className={`toggle-btn${metric === 'fg' ? ' active' : ''}`}
@@ -628,7 +855,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="chart-wrap">
+        <div style={{ paddingTop: '20px', paddingBottom: '12px' }}>
           <ResponsiveContainer width="100%" height={380}>
             <LineChart data={chartData} margin={{ top: 16, right: 40, left: 10, bottom: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
@@ -687,7 +914,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="stat-row">
+        <div className="flex flex-wrap" style={{ gap: '10px', paddingTop: '20px' }}>
           {activeSeries.map(sk => {
             const s    = wembyData.series[sk]
             const cfg  = SERIES_CONFIG[sk]
@@ -733,23 +960,30 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── 00 / WEMBY STATS ─────────────────────────────────────────────────── */}
+      <WembyStats gameStats={wembyData.wemby_game_stats ?? []} t={t} />
+
       {/* ── PHOTO BREAK ──────────────────────────────────────────────────────── */}
       <PhotoBreak quote={t.photo_break_quote} />
 
       {/* ── 04 / REBOUND GEOGRAPHY ───────────────────────────────────────────── */}
-      <section className="section" id="rebounds">
+      <section className="border-b border-black/[0.07]" style={{ padding: '56px 5vw 48px' }} id="rebounds">
         <SectionHead num={t.s04_num} title={t.s04_title} desc={t.s04_desc} />
         <ReboundMap reboundData={wembyData.wemby_rebounds ?? null} lang={lang} />
       </section>
 
-      {/* ── 05 / METHODOLOGY ─────────────────────────────────────────────────── */}
-      <Methodology stats={stats} t={t} />
-
       {/* ── CONCLUSION ───────────────────────────────────────────────────────── */}
-      <section className="conclusion" id="conclusion">
-        <p className="conclusion-label">{t.conclusion_label}</p>
+      <section
+        className="text-center"
+        style={{ padding: '72px 5vw 64px', maxWidth: '760px', margin: '0 auto' }}
+        id="conclusion"
+      >
+        <p
+          className="font-mono font-bold tracking-[0.25em] text-[#7a7a8a] uppercase"
+          style={{ fontSize: '9px', marginBottom: '28px' }}
+        >{t.conclusion_label}</p>
 
-        <p className="conclusion-text">
+        <p className="font-serif text-[#38384a] leading-[1.8] text-left" style={{ fontSize: '16px', marginBottom: '20px' }}>
           {t.conclusion_p1(
             totalGames,
             stats.on_att + stats.off_att,
@@ -759,14 +993,20 @@ export default function App() {
           )}
         </p>
 
-        <div className="conclusion-sub">
-          <p className="conclusion-sub-title">{t.ch_title}</p>
-          <p className="conclusion-text">{t.ch_text}</p>
+        <div className="text-left" style={{ marginBottom: '28px' }}>
+          <p
+            className="font-mono font-bold tracking-[0.2em] uppercase text-[#1d4ed8]"
+            style={{ fontSize: '9px', marginBottom: '12px', textShadow: '0 0 8px rgba(29,78,216,0.3)' }}
+          >{t.ch_title}</p>
+          <p className="font-serif text-[#38384a] leading-[1.8]" style={{ fontSize: '16px' }}>{t.ch_text}</p>
         </div>
 
-        <div className="conclusion-sub">
-          <p className="conclusion-sub-title">{t.cg_title}</p>
-          <p className="conclusion-text">{t.cg_text}</p>
+        <div className="text-left" style={{ marginBottom: '28px' }}>
+          <p
+            className="font-mono font-bold tracking-[0.2em] uppercase text-[#1d4ed8]"
+            style={{ fontSize: '9px', marginBottom: '12px', textShadow: '0 0 8px rgba(29,78,216,0.3)' }}
+          >{t.cg_title}</p>
+          <p className="font-serif text-[#38384a] leading-[1.8]" style={{ fontSize: '16px' }}>{t.cg_text}</p>
         </div>
 
         <p className="conclusion-kicker">
@@ -774,13 +1014,42 @@ export default function App() {
         </p>
       </section>
 
-      <footer className="footer">
+      {/* ── 05 / METHODOLOGY ─────────────────────────────────────────────────── */}
+      <Methodology stats={stats} t={t} />
+
+      <footer
+        className="flex flex-wrap justify-center font-mono uppercase border-t border-black/[0.07]"
+        style={{ gap: '24px', padding: '24px 5vw', marginTop: '32px', fontSize: '8px', letterSpacing: '0.08em', color: '#7a7a8a' }}
+      >
         <span>{t.footer_data}</span>
         <span>{t.footer_on_off}</span>
         <span>{t.footer_season}</span>
+        <span style={{ borderLeft: '1px solid rgba(0,0,0,0.12)', paddingLeft: '24px' }}>
+          <a href="https://github.com/vaquera26" target="_blank" rel="noopener noreferrer"
+             className="flex items-center"
+             style={{ color: '#7a7a8a', textDecoration: 'none', gap: '5px' }}
+             onMouseEnter={e => { e.currentTarget.style.color = '#08080f' }}
+             onMouseLeave={e => { e.currentTarget.style.color = '#7a7a8a' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            vaquera26
+          </a>
+        </span>
+        <span>
+          <a href="https://www.linkedin.com/in/juan-vaquera-ln" target="_blank" rel="noopener noreferrer"
+             className="flex items-center"
+             style={{ color: '#7a7a8a', textDecoration: 'none', gap: '5px' }}
+             onMouseEnter={e => { e.currentTarget.style.color = '#1d4ed8' }}
+             onMouseLeave={e => { e.currentTarget.style.color = '#7a7a8a' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            Juan Vaquera
+          </a>
+        </span>
       </footer>
 
     </div>
   )
 }
-

@@ -21,6 +21,18 @@
   h1, h2 { margin: 0; }
 }
 
+/* Responsive layout — outside layers to beat App.css reset */
+.intro-content  { margin-right: 38%; }
+.field-content  { margin-right: 42%; }
+
+@media (max-width: 767px) {
+  .intro-content,
+  .field-content  { margin-right: 0; }
+  .sidebar-photo  { display: none; }
+  .measurements-bar { overflow-x: auto; flex-wrap: nowrap; }
+  .measurements-cell { min-width: 90px; flex-shrink: 0; }
+}
+
 @layer utilities {
   .neon-blue {
     text-shadow: 0 0 8px rgba(29,78,216,0.7), 0 0 24px rgba(29,78,216,0.35), 0 0 48px rgba(29,78,216,0.15);
