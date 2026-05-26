@@ -778,6 +778,9 @@ export default function App() {
         </div>
       </div>
 
+      {/* ── 00 / WEMBY STATS ─────────────────────────────────────────────────── */}
+      <WembyStats gameStats={wembyData.wemby_game_stats ?? []} t={t} />
+
       {/* ── 01 / THE FIELD ───────────────────────────────────────────────────── */}
       <section className="border-b border-black/[0.07] overflow-hidden" style={{ position: 'relative' }} id="field">
         {/* Left — chart content determines container height */}
@@ -963,9 +966,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── 00 / WEMBY STATS ─────────────────────────────────────────────────── */}
-      <WembyStats gameStats={wembyData.wemby_game_stats ?? []} t={t} />
-
       {/* ── PHOTO BREAK ──────────────────────────────────────────────────────── */}
       <PhotoBreak quote={t.photo_break_quote} />
 
@@ -1023,7 +1023,7 @@ export default function App() {
         </p>
       </section>
 
-      {/* ── 05 / METHODOLOGY ─────────────────────────────────────────────────── */}
+      {/* ── 06 / METHODOLOGY ─────────────────────────────────────────────────── */}
       <Methodology stats={stats} t={t} />
 
       <footer
