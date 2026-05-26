@@ -49,7 +49,7 @@ const T = {
     ],
 
     s01_num: '01', s01_title: 'The Field',
-    s01_desc: 'Wembanyama creates a defensive vector field that deforms opponent shot geometry. Each arrow shows the direction and magnitude of shot displacement in that court zone when Wembanyama is on the floor. Blue = shots suppressed. Red = shots redirected.',
+    s01_desc: 'This is not a study of blocks or contested shots. It is a study of decisions that never happen. Each arrow shows how shot pressure shifts in a given court zone when Wembanyama is on the floor — not because he blocks everything, but because opponents change their minds before they get there. Blue = shots that disappear. Red = where they go instead.',
 
     s02_num: '02', s02_title: 'Shot Geography',
     s02_desc: 'Where opponents actually shoot — and how the distribution shifts with Wembanyama on court versus on the bench. Toggle between individual shot dots and a zone efficiency heat map.',
@@ -125,18 +125,18 @@ const T = {
 
     conclusion_label: 'Conclusion',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `Across ${games} games and ${attempts} opponent field goal attempts in the 2025–26 NBA Playoffs, Victor Wembanyama's defensive presence produced a measurable shift in opponent shot selection. Rivals attempted shots at ${on}% efficiency with him on court versus ${off}% without — a difference of ${diff} percentage points. The aggregate gap is modest. The spatial pattern beneath it is more revealing.`,
+      `Most defensive analysis counts what Wembanyama does: blocks, contested shots, altered finishes. This study tries to measure something different — what opponents stop doing when he is on the floor. Across ${games} games and ${attempts} opponent field goal attempts, rivals shot ${on}% with him on court versus ${off}% without. A ${diff} percentage point gap. Modest. But the spatial pattern beneath that number tells a different story.`,
 
-    ch_title: 'The Height Question',
-    ch_text:  "The shot chart shows opponents still attacking the rim with Wembanyama on the floor — the paint doesn't empty. What changes is the geometry required. Against a 9'8\" standing reach, a direct-angle finish becomes much harder. The shooter needs a higher arc, a wider approach, a more precise release. The shot happens — the margin for error shrinks. That's the signal in the data: not fewer rim attempts overall, but a 7.6 percentage point drop in restricted area attempts as a share of the shot diet. Whether that gap is explained purely by height or by something harder to measure — court awareness, positioning, timing — the data can't say. What it can say is that the pattern is consistent across all three series.",
+    ch_title: 'The Forbidden Zone',
+    ch_text:  "The most significant finding in the data is not at the rim. It is at short mid-range — the range roughly 4 to 8 feet from the basket. That is where opponent attempt rates collapse most sharply when Wembanyama is on the floor. Opponents are not avoiding the paint entirely. They are avoiding a specific band of the court where his standing reach of 9'8\" makes any standard finish unreliable. Not because he will necessarily block the shot. Because they know before they catch the ball that the margin for error at that distance, against that wingspan, is close to zero. That behavioral shift — decisions made before a play happens — is what the vector field is mapping. It is not measuring defensive results. It is measuring the geometry of what opponents are willing to attempt.",
 
     cg_title: 'A New G.O.A.T.?',
-    cg_text:  "The GOAT conversation is for later. Jordan's bar is six rings and six Finals MVPs without losing a series. LeBron's bar is 20+ years of sustained greatness across four franchises. Wembanyama hasn't done any of that — and that's fine, because he's 22. What the data in this study already shows is something the league has never produced at this age: a player posting 26.3 pts, 10.3 reb, and 5 blocks per series against Portland, then 23 pts and 5 blocks against Minnesota, then 30 pts and 3 blocks in the Conference Finals — all while shifting opponent shot selection simultaneously. In Game 1 against OKC, on the road, in overtime, he put up 41 points and 24 rebounds. That's not a defensive specialist. That's a player threatening to be the best on both ends of the floor at the same time. No one in the modern era has done that. The health question is real. Give it time. Watch the results build.",
+    cg_text:  "The GOAT conversation is for later. Jordan's bar is six rings and six Finals MVPs without losing a series. LeBron's bar is 20+ years of sustained greatness across four franchises. Wembanyama hasn't done any of that — and that's fine, because he's 22. What the data in this study already shows is something the league has never produced at this age: a player averaging 4+ blocks per game across his first two full playoff series while simultaneously posting 26 points against Portland and 23 against Minnesota — and then 30 in the Conference Finals. In Game 1 against OKC, on the road, in overtime, he put up 41 points and 24 rebounds. That is not a defensive specialist. That is a player threatening to be the best on both ends of the floor at the same time. The health question is real. Give it time.",
 
-    kicker1: "The effect is subtle. The data shows a shift in shot selection,",
-    kicker2: "not a shutdown. That distinction matters.",
+    kicker1: "This study is not about Wembanyama.",
+    kicker2: "It is about what the court looks like when he is on it.",
 
-    photo_break_quote: "The numbers are modest. The spatial pattern is real.",
+    photo_break_quote: "It is not a study of blocks. It is a study of decisions that never happen.",
 
     footer_data:   'Data: NBA Stats API · stats.nba.com',
     footer_on_off: 'On/off classification via PlayByPlayV3 substitution events',
@@ -167,7 +167,7 @@ const T = {
     ],
 
     s01_num: '01', s01_title: 'El Campo',
-    s01_desc: 'Wembanyama genera un campo vectorial defensivo que deforma la geometría de tiros rivales. Cada flecha muestra la dirección y magnitud del desplazamiento de tiros en esa zona cuando Wembanyama está en cancha. Azul = tiros suprimidos. Rojo = tiros redirigidos.',
+    s01_desc: 'Este no es un estudio de bloqueos ni de tiros contestados. Es un estudio de decisiones que nunca ocurren. Cada flecha muestra cómo se desplaza la presión de tiro en una zona de la cancha cuando Wembanyama está en ella — no porque bloquee todo, sino porque los rivales cambian de idea antes de llegar. Azul = tiros que desaparecen. Rojo = hacia dónde van en su lugar.',
 
     s02_num: '02', s02_title: 'Geografía de Tiros',
     s02_desc: 'Dónde realmente tiran los rivales — y cómo cambia la distribución con Wembanyama en cancha versus en la banca. Alterna entre puntos individuales y un mapa de calor de eficiencia por zona.',
@@ -243,18 +243,18 @@ const T = {
 
     conclusion_label: 'Conclusión',
     conclusion_p1: (games, attempts, on, off, diff) =>
-      `En ${games} partidos y ${attempts} intentos de tiro rival en los Playoffs NBA 2025–26, la presencia defensiva de Victor Wembanyama produjo un cambio medible en la selección de tiros rival. Los rivales anotaron con una eficiencia del ${on}% con él en cancha frente al ${off}% sin él — una diferencia de ${diff} puntos porcentuales. La brecha agregada es modesta. El patrón espacial que hay debajo es más revelador.`,
+      `La mayoría del análisis defensivo cuenta lo que Wembanyama hace: bloqueos, tiros contestados, bandejas alteradas. Este estudio intenta medir algo diferente — lo que los rivales dejan de intentar cuando él está en cancha. En ${games} partidos y ${attempts} intentos de tiro, los rivales anotaron el ${on}% con él en cancha frente al ${off}% sin él. Una diferencia de ${diff} puntos porcentuales. Modesta. Pero el patrón espacial debajo de ese número cuenta una historia distinta.`,
 
-    ch_title: '¿Es Solo la Altura?',
-    ch_text:  "El mapa de tiros muestra que los rivales siguen atacando la pintura con Wembanyama en cancha — la zona no queda vacía. Lo que cambia es la geometría requerida del intento. Contra un alcance de pie de 2.95 m, una bandeja de ángulo directo se vuelve mucho más difícil. El lanzador necesita una parábola más alta, un ángulo de entrada más amplio, una soltura más precisa. El tiro ocurre — el margen de error se reduce. Esa es la señal en los datos: no menos intentos en el aro en términos absolutos, sino una caída de 7.6 puntos porcentuales en la proporción de intentos en el área restringida. Si esa diferencia se explica puramente por la altura o por algo más difícil de medir — lectura de cancha, posicionamiento, timing — los datos no lo dicen. Lo que sí dicen es que el patrón es consistente en las tres series.",
+    ch_title: 'La Zona Prohibida',
+    ch_text:  "El hallazgo más significativo en los datos no está en el aro. Está en el tiro corto de media distancia — el rango de aproximadamente 1.2 a 2.4 metros del aro. Ahí es donde la tasa de intentos rivales colapsa con mayor fuerza cuando Wembanyama está en cancha. Los rivales no evitan completamente la pintura. Evitan una banda específica de la cancha donde su alcance de pie de 2.95 metros hace que cualquier finalización estándar sea poco confiable. No porque vaya a bloquear el tiro necesariamente. Sino porque saben antes de recibir el balón que el margen de error a esa distancia, contra esa envergadura, es casi cero. Ese desplazamiento conductual — decisiones tomadas antes de que ocurra una jugada — es lo que el campo vectorial está mapeando. No mide resultados defensivos. Mide la geometría de lo que los rivales están dispuestos a intentar.",
 
     cg_title: '¿Un Nuevo G.O.A.T.?',
-    cg_text:  "La conversación del GOAT es para después. El estándar de Jordan es seis anillos y seis MVP de Finales sin perder una serie. El de LeBron son más de 20 años de grandeza sostenida en cuatro franquicias. Wembanyama no ha hecho nada de eso todavía — y está bien, tiene 22 años. Lo que los datos de este estudio ya muestran es algo que la liga no había producido a esta edad: 26.3 pts y 5 bloqueos por serie contra Portland, 23 pts y 5 bloqueos contra Minnesota, 30 pts y 3 bloqueos en las Finales de Conferencia — todo mientras desplaza la selección de tiros rivales simultáneamente. En el Juego 1 contra OKC, de visitante, en tiempo extra, anotó 41 puntos y capturó 24 rebotes. Eso no es un especialista defensivo. Es un jugador que amenaza con ser el mejor en ambos extremos de la cancha al mismo tiempo. Nadie en la era moderna ha hecho eso. La pregunta de salud es real. Dale tiempo. Observa los resultados acumularse.",
+    cg_text:  "La conversación del GOAT es para después. El estándar de Jordan son seis anillos y seis MVP de Finales sin perder una serie. El de LeBron son más de 20 años de grandeza sostenida en cuatro franquicias. Wembanyama no ha hecho nada de eso todavía — y está bien, tiene 22 años. Lo que los datos de este estudio ya muestran es algo que la liga no había producido a esta edad: un jugador promediando más de 4 bloqueos por partido en sus primeras dos series completas de playoffs mientras anotaba 26 puntos contra Portland y 23 contra Minnesota — y luego 30 en las Finales de Conferencia. En el Juego 1 contra OKC, de visitante, en tiempo extra, anotó 41 puntos y capturó 24 rebotes. Eso no es un especialista defensivo. Es un jugador que amenaza con ser el mejor en ambos extremos de la cancha al mismo tiempo. La pregunta de salud es real. Dale tiempo.",
 
-    kicker1: "El efecto es sutil. Los datos muestran un cambio en la selección de tiros,",
-    kicker2: "no un apagón defensivo. Esa distinción importa.",
+    kicker1: "Este estudio no es sobre Wembanyama.",
+    kicker2: "Es sobre cómo se ve la cancha cuando él está en ella.",
 
-    photo_break_quote: "Los números son modestos. El patrón espacial es real.",
+    photo_break_quote: "No es un estudio de bloqueos. Es un estudio de decisiones que nunca ocurren.",
 
     footer_data:   'Datos: NBA Stats API · stats.nba.com',
     footer_on_off: 'Clasificación dentro/fuera vía eventos de sustitución PlayByPlayV3',
